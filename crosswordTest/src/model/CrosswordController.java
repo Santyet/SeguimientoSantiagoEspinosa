@@ -19,6 +19,24 @@ public class CrosswordController {
 	 * the initial state of a crossword puzzle
 	 */
 	public void initCrossword(String[][] puzzle) {
+
+		crossword = new Cell[puzzle.length][puzzle[0].length];
+		int count = 1;
+
+		for(int i = 0;i<crossword.length;i++){
+
+			for(int j = 0;j<crossword[0].length;j++){
+				
+				if(puzzle[i][j].equals(" ")){
+					crossword[i][j] = new Cell(CellType.BLACK, puzzle[i][j], 0);
+				}else{
+					crossword[i][j] = new Cell(CellType.CLOSED, puzzle[i][j], count);
+					count++;
+				}
+				
+				
+			}
+		}
 		
 		
 	}
@@ -51,8 +69,28 @@ public class CrosswordController {
 	 * @return
 	 */
 	public String getHint(String letter) {
+
+		String out = "";
+		boolean done = false;
+
+			for(int i = 0;i<crossword.length && done==false;i++){
+
+				for(int j = 0;j<crossword[0].length && done==false;j++){
+	
+					if(crossword[i][j].getLetter().equals(letter) && crossword[i][j].getState().equals(CellType.CLOSED)){
+	
+						out = "There is a word with the letter " + letter + " in the crossword in the cell " + crossword[i][j].getNumber();
+						crossword[i][j].setState(CellType.OPEN);
+						done = true;
+					}else{
+	
+						out = "Sorry, there are no words with the letter " + letter;
+					}
+				}
+			}
 		
-		return null;
+		
+		return out;
 	}
 	
 	/**
@@ -62,8 +100,29 @@ public class CrosswordController {
 	 * @return
 	 */
 	public String evaluateCell(String letter, int num) {
+
+		String out = "";
+		boolean done = false;
+
+			for(int i = 0;i<crossword.length && done==false;i++){
+
+				for(int j = 0;j<crossword[0].length && done==false;j++){
+	
+					if(crossword[i][j].getLetter().equals(letter) && crossword[i][j].getState().equals(CellType.CLOSED) 
+					&& crossword[i][j].getNumber()==num){
+	
+						out = "The letter " + letter + " exists in the cell " + crossword[i][j].getNumber();
+						crossword[i][j].setState(CellType.OPEN);
+						done = true;
+					}else{
+	
+						out = "Sorry, there are no words with the letter " + letter;
+					}
+				}
+			}
 		
-		return null;
+		
+		return out;
 	}
 	
 	public String showCrossword() {
