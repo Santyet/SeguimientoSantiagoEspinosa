@@ -116,7 +116,7 @@ public class CrosswordController {
 						done = true;
 					}else{
 	
-						out = "Sorry, there are no words with the letter " + letter;
+						out = "Sorry, the letter " + letter + " doesn't exists in the cell " + crossword[i][j].getNumber();
 					}
 				}
 			}
